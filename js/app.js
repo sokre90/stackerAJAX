@@ -2,7 +2,7 @@
 // and returns new result to be appended to DOM
 var showQuestion = function(question) {
 	
-	// clone our result template code
+// 	// clone our result template code
 	var result = $('.templates .question').clone();
 	
 	// Set the question properties in result
@@ -81,6 +81,58 @@ var getUnanswered = function(tags) {
 	});
 };
 
+// get top answerers for a tag
+function showTopAnswerers(topAnswer) {
+	// clone our result template code
+	var result = $('.templates .top-answerers').clone();
+	
+	// Set the question properties in result
+	var topAnswerElem = result.find('.user-name a');
+	topAnswerElem.attr('href', topAnswer.link);
+	topAnswerElem.text(topAnswer.display_name);
+
+	// set the .viewed for question property in result
+	var reputation = result.find('.reputation');
+	reputation.text(topAnswer.reputation);
+
+	// set some properties related to asker
+	var score = result.find('.score');
+	score.html(topAnswer.score);
+
+	return result;
+};
+
+function getTopAnswers(tags) {
+
+	var request = {
+		tagged: tags,
+		site: 'stackoverflow'}
+		// user:{
+		// 	reputation: '',
+		// 	display_name: ''}
+		// post_count: '',
+		// score: ''}
+	var url= "http://api.stackexchange.com/2.2/tags/" +tags+ "/top-answerers/all_time";
+	console.log(url);
+	$.ajax({
+		url: url,
+		data: request,
+		dataType: "jsonp",//use jsonp to avoid cross origin issues
+		type: "GET",
+	})
+	.done(function(result){
+		console.log(result);
+		var searchResults = showSearchResults(request.tagged, result.items.length);
+
+		$('.search-results').html(searchResults);
+		
+		$.each(result.items, function(i, item) {
+			var topAnswer = showTopAnswerers(item);
+			$('.results').append(topAnswer);
+		});
+	})	
+} 
+
 
 $(document).ready( function() {
 	$('.unanswered-getter').submit( function(e){
@@ -91,4 +143,14 @@ $(document).ready( function() {
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
 	});
+
+	$('.inspiration-getter').submit(function(event) {
+		event.preventDefault();
+
+		$('.results').html('');
+
+		var tags = $(this).find("input[name='answerers']").val();
+		getTopAnswers(tags);
+		
+	})
 });
