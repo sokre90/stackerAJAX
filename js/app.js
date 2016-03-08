@@ -65,8 +65,8 @@ var getUnanswered = function(tags) {
 		type: "GET",
 	})
 	.done(function(result){ //this waits for the ajax to return with a succesful promise object
+		
 		var searchResults = showSearchResults(request.tagged, result.items.length);
-
 		$('.search-results').html(searchResults);
 		//$.each is a higher order function. It takes an array and a function as an argument.
 		//The function is executed once for each item in the array.
@@ -87,13 +87,24 @@ function showTopAnswerers(topAnswer) {
 	var result = $('.templates .top-answerers').clone();
 	
 	// Set the question properties in result
-	var topAnswerElem = result.find('.user-name a');
-	topAnswerElem.attr('href', topAnswer.link);
-	topAnswerElem.text(topAnswer.display_name);
+	// var topAnswerElem = result.find('.user-name a');
+	// topAnswerElem.attr('href', topAnswer.user.link);
+	// topAnswerElem.text(topAnswer.user.display_name);
+
+	var topAnswerElem = result.find('.user-name');
+	topAnswerElem.html('<p><a target="_blank" href='+topAnswer.user.link+'> '+topAnswer.user.display_name +'</a></p><p><img src='+topAnswer.user.profile_image+ 'alt="profile image" height="100px" width="100px"></p>');
+
+	//profile image added to the user
+	// var topAnswererAvatar = result.find('user-name img');
+	// topAnswererAvatar.attr('src', topAnswer.user.profile_image);
+
+	// number of posts
+	var numPosts = result.find('.num-posts');
+	numPosts.text(topAnswer.post_count);
 
 	// set the .viewed for question property in result
 	var reputation = result.find('.reputation');
-	reputation.text(topAnswer.reputation);
+	reputation.text(topAnswer.user.reputation);
 
 	// set some properties related to asker
 	var score = result.find('.score');
@@ -106,14 +117,11 @@ function getTopAnswers(tags) {
 
 	var request = {
 		tagged: tags,
-		site: 'stackoverflow'}
-		// user:{
-		// 	reputation: '',
-		// 	display_name: ''}
-		// post_count: '',
-		// score: ''}
+		site: 'stackoverflow'
+		}
+
 	var url= "https://api.stackexchange.com/2.2/tags/" +tags+ "/top-answerers/all_time";
-	console.log(url);
+
 	$.ajax({
 		url: url,
 		data: request,
@@ -121,7 +129,8 @@ function getTopAnswers(tags) {
 		type: "GET",
 	})
 	.done(function(result){
-		console.log(result);
+						console.log(result);
+
 		var searchResults = showSearchResults(request.tagged, result.items.length);
 
 		$('.search-results').html(searchResults);
