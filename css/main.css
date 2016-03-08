@@ -1,3 +1,6 @@
+html {
+	background-color: #fafafa;
+}
 .container {
 	margin: 3em auto;
 	width: 600px;
@@ -44,21 +47,29 @@
 }
 
 .result dd {
-	color: rgb(239, 119, 3);
-}
-
-.result dt {
 	color: #fafafa;
 }
 
-.result a {
-	/*text-decoration: none;*/
+.result dt {
 	color: rgb(239, 119, 3);
+
+}
+
+.result a {
+	color: deepskyblue;
+}
+
+.result a:hover {
+	text-decoration: none;
+	color: dodgerblue;
 }
 
 .error {
 	background-color: #F78181;
 	padding: 1em;
+}
+span {
+	color: rgb(239, 119, 3);
 }
 
 /*.templates {

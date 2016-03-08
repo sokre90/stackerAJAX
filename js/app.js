@@ -21,11 +21,11 @@ var showQuestion = function(question) {
 
 	// set some properties related to asker
 	var asker = result.find('.asker');
-	asker.html('<p>Name: <a target="_blank" '+
+	asker.html('<p><span>Name:  </span><a target="_blank" '+
 		'href=https://stackoverflow.com/users/' + question.owner.user_id + ' >' +
 		question.owner.display_name +
 		'</a></p>' +
-		'<p>Reputation: ' + question.owner.reputation + '</p>'
+		'<p><span>Reputation:  </span>' + question.owner.reputation + '</p>'
 	);
 
 	return result;
@@ -87,16 +87,8 @@ function showTopAnswerers(topAnswer) {
 	var result = $('.templates .top-answerers').clone();
 	
 	// Set the question properties in result
-	// var topAnswerElem = result.find('.user-name a');
-	// topAnswerElem.attr('href', topAnswer.user.link);
-	// topAnswerElem.text(topAnswer.user.display_name);
-
 	var topAnswerElem = result.find('.user-name');
 	topAnswerElem.html('<p><a target="_blank" href='+topAnswer.user.link+'> '+topAnswer.user.display_name +'</a></p><p><img src='+topAnswer.user.profile_image+ 'alt="profile image" height="100px" width="100px"></p>');
-
-	//profile image added to the user
-	// var topAnswererAvatar = result.find('user-name img');
-	// topAnswererAvatar.attr('src', topAnswer.user.profile_image);
 
 	// number of posts
 	var numPosts = result.find('.num-posts');
